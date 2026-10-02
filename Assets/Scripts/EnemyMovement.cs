@@ -3,20 +3,26 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public Transform player;
-
+    private Transform[] doors;
     private NavMeshAgent navMeshAgent;
 
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-    }
 
-    private void Update()
-    {
-        if (player != null && navMeshAgent != null && navMeshAgent.enabled)
+        GameObject[] doorObjects = GameObject.FindGameObjectsWithTag("DoorExit");
+
+        doors = new Transform[doorObjects.Length];
+
+        for (int i = 0; i < doorObjects.Length; i++)
         {
-            navMeshAgent.SetDestination(player.position);
+            doors[i] = doorObjects[i].transform;
+        }
+
+        if (doors.Length > 0)
+        {
+            int randomDoor = Random.Range(0, doors.Length);
+            navMeshAgent.SetDestination(doors[randomDoor].position);
         }
     }
 
